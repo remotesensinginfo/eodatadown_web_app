@@ -49,7 +49,7 @@ def imagelist():
     
     print(start_date)
     print(end_date)
-    print(sensor)
+    print(sensor_str)
     print("HERE - 5")
     
     sensor_obj = None
