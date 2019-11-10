@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+        <h2>Jobs</h2>
+        
+        <ol>
+	        {% for job in jobs %}
+	        <li>Job: {{ job.jobname }} (Version {{ job.version }}):
+                <ul>
+		        <li> <a href='/tasklist?jobname={{ job.jobname }}&version={{ job.version }}&status=all'>All</a>
+		        <li> <a href='/tasklist?jobname={{ job.jobname }}&version={{ job.version }}&status=uncomplete'>Uncomplete</a>
+                </ul>
+		    </li>
+	        {% endfor %}
+	    </ol>
+        
+{% endblock %}
+

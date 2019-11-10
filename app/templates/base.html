@@ -1,0 +1,114 @@
+<html>
+    <head>
+        <meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<link rel="stylesheet" href="static/css/main.css" />
+		<link rel="stylesheet" href="static/css/jquery-ui.css">
+        {% if title %}
+        <title>{{ title }}</title>
+        {% else %}
+        <title>Compute Job Recorder</title>
+        {% endif %}
+    </head>
+    <body class="is-preload">
+        <!-- Header -->
+			<header id="header">
+				<a class="logo" href="/index">EODataDown - Automated EO ARD Data Production</a>
+				<nav>
+					<a href="#menu">Menu</a>
+				</nav>
+			</header>
+
+		<!-- Nav -->
+			<nav id="menu">
+				<ul class="links">
+					<li><a href="/index">Home</a></li>
+					<li><a href="/reports">Reports</a></li>
+					<li><a href="/background">Background</a></li>
+				</ul>
+			</nav>
+
+		<!-- Heading -->
+			<div id="heading" >
+				<h1>EODataDown - Automated EO ARD Data Production</h1>
+			</div>
+
+        <!-- Main -->
+			<section id="main" class="wrapper">
+				<div class="inner">
+					<div class="content">
+
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                    <ul>
+                        {% for message in messages %}
+                        <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    {% endwith %}
+
+                    {% block content %}{% endblock %}
+
+                    </div>
+				</div>
+			</section>
+
+        <!-- Footer -->
+			<footer id="footer">
+				<div class="inner">
+					<div class="content">
+						<section>
+							<h3>Background</h3>
+							<p>We write a number of tools which aid the processing remotely sensed and spatial data.
+                                Primarily the Remote Sensing and GIS software library (RSGISLib) which under pins
+                                most of our data analysis projects and software such as ARCSI and EODataDown which
+                                combined to provide a fully automated processing chain for downloading and converting
+                                remotely sensed data, such as Landsat, Sentinel-1 and Sentinel-2 to an Analysis Ready
+                                Data (ARD) format.
+                            </p>
+						</section>
+						<section>
+							<h4>Other Packages</h4>
+							<ul class="alt">
+								<li><a href="https://www.rsgislib.org">RSGISLib.</a></li>
+								<li><a href="https://arcsi.remotesensing.org">ARCSI.</a></li>
+								<li><a href="https://eodatadown.remotesensing.org">EODataDown.</a></li>
+								<li><a href="http://www.spdlib.org">SPDLib.</a></li>
+							</ul>
+						</section>
+						<section>
+							<h4>Open Source Code Repo's</h4>
+							<ul class="plain">
+								<li><a href="https://bitbucket.org/petebunting"><i class="icon fa-bitbucket">&nbsp;</i>Bitbucket</a></li>
+								<li><a href="https://github.com/petebunting"><i class="icon fa-github">&nbsp;</i>Github</a></li>
+							</ul>
+						</section>
+					</div>
+					<div class="copyright">
+                        &copy; <a href="https://remotesensing.info">Pete Bunting</a>.
+					</div>
+				</div>
+			</footer>
+
+		<!-- Scripts -->
+        <script src="static/js/jquery.min.js"></script>
+        <script src="static/js/browser.min.js"></script>
+        <script src="static/js/breakpoints.min.js"></script>
+        <script src="static/js/util.js"></script>
+        <script src="static/js/main.js"></script>
+        <script src="static/js/run_prettify.js"></script>
+        <script src="static/js/jquery-ui.min.js"></script>
+                
+        <script>
+        $(function() {
+            $( ".startdate" ).datepicker({ dateFormat: 'dd-mm-yy', changeYear: true, yearRange: "-50:+1", showButtonPanel: true });
+            $( ".enddate" ).datepicker({ dateFormat: 'dd-mm-yy', changeYear: true, yearRange: "-50:+1", showButtonPanel: true });
+        });
+        </script>
+
+    </body>
+</html>
+

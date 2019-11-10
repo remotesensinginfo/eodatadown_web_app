@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Select Period and Sensor of Interest</h2>
+    <p>To use this tool select the start, end dates and sensor you are interested in to visualise available images.</p>
+    
+    <form method="POST" enctype="multipart/form-data" action="/imagelist" >
+        {{ form.hidden_tag() }}
+        <p>
+        <div style="width: 40%">
+            {{form.start_date(class="startdate")}}
+        </div>
+        <div style="width: 40%">
+            {{form.end_date(class="enddate")}}
+        </div>
+        <br/>
+        {% for error in form.start_date.errors %}
+        <span style="color: red;">Start Date: {{ error }}</span>
+        {% endfor %}
+        {% for error in form.end_date.errors %}
+        <span style="color: red;">End Date: {{ error }}</span>
+        {% endfor %}
+        <div style="width: 50%">
+        {{form.sensor_field}}
+        </div>
+        {% for error in form.sensor_field.errors %}
+        <span style="color: red;">Sensors: {{ error }}</span>
+        {% endfor %}
+        </p>
+        <p>{{ form.go_submit() }}</p>
+    </form>
+
+{% endblock %}

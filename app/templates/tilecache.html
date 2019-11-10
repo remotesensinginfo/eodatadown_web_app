@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+        <h2>{{ job.jobname }} (Version {{ job.version }})</h2>
+
+    	<table border="black">
+        <thead>
+		<tr>
+			<th>Task ID</th>
+			<th>Start Time</th>
+			<th>End Time</th>
+            <th>Completed?</th>
+		</tr>
+        </thead>
+        <tbody>
+        {% for task in tasks %}
+		<tr onclick="window.location='/taskinfo?jobname={{ job.jobname }}&version={{ job.version }}&taskid={{ task.task_id }}'" style="tr:hover: {background-color:yellow;}">
+		<td>
+            <a href='/taskinfo?jobname={{ job.jobname }}&version={{ job.version }}&taskid={{ task.task_id }}' >
+                {{ task.task_id }}
+            </a>
+        </td>
+		<td>{{ task.start.year }}/{{ task.start.month }}/{{ task.start.day }} {{ task.start.hour }}:{{ task.start.minute }}:{{ task.start.second }}</td>
+		<td>
+            {% if task.completed %}
+            {{ task.end.year }}/{{ task.end.month }}/{{ task.end.day }} {{ task.end.hour }}:{{ task.end.minute }}:{{ task.end.second }}
+            {% endif %}
+        </td>
+        {% if task.completed %}
+            <td style="background-color:green;text-align:center;vertical-align:middle;color:black;font-weight:bold;"> Completed </td>
+        {% else %}
+            <td style="background-color:red;text-align:center;vertical-align:middle;color:black;font-weight:bold;"> Not Completed </td>
+        {% endif %}
+		</tr>
+        {% endfor %}
+        </tbody>
+        </table>
+
+    
+{% endblock %}
