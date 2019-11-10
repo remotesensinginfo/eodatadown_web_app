@@ -11,11 +11,10 @@ from app import app
 from flask_wtf import FlaskForm
 from wtforms import SubmitField, SelectField, DateField
 from wtforms.validators import Required
-#from wtforms.fields.html5 import DateField
 
 import eodatadown.eodatadownsystemmain
 
-CONFIG_FILE = "/Users/pete/Temp/wales_ard_monitoring/eodd/config/EODataDownBaseConfig_psql.json"
+CONFIG_FILE = "/bigdata/eodd_wales_ard/scripts/eodd/config/EODataDownBaseConfig_psql.json"
 
 class SelectDataForm(FlaskForm):
     start_date = DateField('Start', validators=[Required()], format='%Y/%m/%d', default=datetime.date(1980, 1, 1), description='Start Date')
@@ -38,9 +37,10 @@ def imagelist():
         sys_main_obj = eodatadown.eodatadownsystemmain.EODataDownSystemMain()
         sys_main_obj.parse_config(CONFIG_FILE)
         sensor_sys_objs = sys_main_obj.get_sensors()
-    except Exception:
+    except Exception as e:
+        print(e)
         flash('Something has gone wrong either the database was found or there is an error with the configuration file.')
-        return redirect('index.html')
+        return redirect('/index')
     
     form = request.form
     start_date = form['start_date']
@@ -68,7 +68,8 @@ def imagelist():
     if found_sensor_obj:
         print("HERE - 6")
     else:
+        print("Error - didn't not find the sensor object.")
         flash('Something has gone wrong could not find the sensor specfied.')
-        return redirect('index.html')
+        return redirect('/index')
     
     return render_template('imagelist.html')
