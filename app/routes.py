@@ -40,7 +40,7 @@ def imagelist():
     except Exception as e:
         print(e)
         flash('Something has gone wrong either the database was found or there is an error with the configuration file.')
-        return redirect('/index')
+        return redirect('/')
     
     form = request.form
     start_date = form['start_date']
@@ -70,6 +70,6 @@ def imagelist():
     else:
         print("Error - didn't not find the sensor object.")
         flash('Something has gone wrong could not find the sensor specfied.')
-        return redirect('/index')
+        return redirect('/')
     
     return render_template('imagelist.html')
