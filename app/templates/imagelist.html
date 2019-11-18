@@ -13,11 +13,11 @@
             {% endif %}
         </p>
         
-        <div class="contianer">
+        <div class="scncontainer">
         {% for scn in scns %}
 	    <a href="quicklook?scn={{ scn }}">
                 <figure>
-                    <img src="{{ scns[scn].img }}", alt="{{ scns[scn].id }}" />
+                    <img class="image" src="{{ scns[scn].img }}" alt="{{ scns[scn].id }}" />
                 </figure>
             <p>{{ scns[scn].date }} </p>
         </a>
