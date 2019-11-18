@@ -97,60 +97,68 @@ def imagelist():
         print("HERE - 6")
         n_scns = sensor_obj.query_scn_records_date_count(start_date_obj, end_date_obj, valid=True)
         print("N Scenes: {}".format(n_scns))
+        if n_scns > 0:
+            n_full_pages = math.floor(n_scns / N_SCNS_PAGE)
+            remain_scns = n_scns - (n_full_pages * N_SCNS_PAGE)
+            print("{} Full Pages with {} remaining".format(n_full_pages, remain_scns))
 
-        n_full_pages = math.floor(n_scns / N_SCNS_PAGE)
-        remain_scns = n_scns - (n_full_pages * N_SCNS_PAGE)
-        print("{} Full Pages with {} remaining".format(n_full_pages, remain_scns))
-
-        if n_full_pages > 0:
-            start_rec = 0
-            n_pg_scns = N_SCNS_PAGE
-            if (disp_page >= 0) and (disp_page <= n_full_pages):
-                start_rec = disp_page * N_SCNS_PAGE
-                session['page'] = disp_page
-            elif disp_page > n_full_pages:
-                start_rec = n_full_pages * N_SCNS_PAGE
-                n_pg_scns = remain_scns
-                session['page'] = n_full_pages+1
-                disp_page = n_full_pages+1
-            scns = sensor_obj.query_scn_records_date(start_date, end_date, start_rec, n_pg_scns, valid=True)
-        else:
-            scns = sensor_obj.query_scn_records_date(start_date, end_date, 0, remain_scns, valid=True)
-
-        for scn in scns:
-            imgs_dict[scn.PID] = dict()
-            if sensor_str == 'Landsat':
-                imgs_dict[scn.PID]['id'] = scn.Scene_ID
-                imgs_dict[scn.PID]['date'] = scn.Date_Acquired.strftime('%Y-%m-%d')
-            elif sensor_str == 'Sentinel-1':
-                imgs_dict[scn.PID]['id'] = scn.Scene_ID
-                imgs_dict[scn.PID]['date'] = scn.Acquisition_Date.strftime('%Y-%m-%d')
-            elif sensor_str == 'Sentinel-2':
-                imgs_dict[scn.PID]['id'] = scn.Granule_ID
-                imgs_dict[scn.PID]['date'] = scn.Sensing_Time.strftime('%Y-%m-%d')
+            if n_full_pages > 0:
+                start_rec = 0
+                n_pg_scns = N_SCNS_PAGE
+                if (disp_page >= 0) and (disp_page <= n_full_pages):
+                    start_rec = disp_page * N_SCNS_PAGE
+                    session['page'] = disp_page
+                elif disp_page > n_full_pages:
+                    start_rec = n_full_pages * N_SCNS_PAGE
+                    n_pg_scns = remain_scns
+                    session['page'] = n_full_pages+1
+                    disp_page = n_full_pages+1
+                scns = sensor_obj.query_scn_records_date(start_date, end_date, start_rec, n_pg_scns, valid=True)
             else:
-                flash('Something has gone wrong could not find the sensor specfied.')
+                scns = sensor_obj.query_scn_records_date(start_date, end_date, 0, remain_scns, valid=True)
+
+            for scn in scns:
+                imgs_dict[scn.PID] = dict()
+                if sensor_str == 'Landsat':
+                    imgs_dict[scn.PID]['id'] = scn.Scene_ID
+                    imgs_dict[scn.PID]['date'] = scn.Date_Acquired.strftime('%Y-%m-%d')
+                elif sensor_str == 'Sentinel-1':
+                    imgs_dict[scn.PID]['id'] = scn.Scene_ID
+                    imgs_dict[scn.PID]['date'] = scn.Acquisition_Date.strftime('%Y-%m-%d')
+                elif sensor_str == 'Sentinel-2':
+                    imgs_dict[scn.PID]['id'] = scn.Granule_ID
+                    imgs_dict[scn.PID]['date'] = scn.Sensing_Time.strftime('%Y-%m-%d')
+                else:
+                    flash('Something has gone wrong could not find the sensor specfied.')
+                    return redirect('/')
+
+                qk_imgs = scn.ExtendedInfo["quicklook"]["quicklookimgs"]
+                qk_sm_img = ''
+                for qk_img in qk_imgs:
+                    if '250px' in qk_img:
+                        qk_sm_img = qk_img
+                        break
+                glb_qk_sm_img = qk_sm_img.replace(EODD_WEB_PATHS["LCL"], EODD_WEB_PATHS["GLB"])
+                print(qk_sm_img)
+                print(glb_qk_sm_img)
+                imgs_dict[scn.PID]['img'] = glb_qk_sm_img
+            else:
+                print("Error - didn't not find the sensor object.")
+                flash('Something has gone wrong could not find any scenes.')
                 return redirect('/')
-                
-            qk_imgs = scn.ExtendedInfo["quicklook"]["quicklookimgs"]
-            qk_sm_img = ''
-            for qk_img in qk_imgs:
-                if '250px' in qk_img:
-                    qk_sm_img = qk_img
-                    break
-            glb_qk_sm_img = qk_sm_img.replace(EODD_WEB_PATHS["LCL"], EODD_WEB_PATHS["GLB"])
-            print(qk_sm_img)
-            print(glb_qk_sm_img)
-            imgs_dict[scn.PID]['img'] = glb_qk_sm_img
+
+            page_info = {"n_pages": n_full_pages + 1, "c_page": disp_page}
+            if disp_page < n_full_pages + 1:
+                page_info['n_page'] = disp_page + 1
+            elif disp_page > 0:
+                page_info['p_page'] = disp_page - 1
+
+            return render_template('imagelist.html', scns=imgs_dict, sensor=sensor_str, page_info=page_info)
     else:
         print("Error - didn't not find the sensor object.")
         flash('Something has gone wrong could not find the sensor specfied.')
         return redirect('/')
 
-    page_info = {"n_pages":n_full_pages+1, "c_page":disp_page}
-    if disp_page < n_full_pages+1:
-        page_info['n_page'] = disp_page + 1
-    elif disp_page > 0:
-        page_info['p_page'] = disp_page - 1
+    flash('Should not have got here, some unspecified error, please try again.')
+    return redirect('/')
 
-    return render_template('imagelist.html', scns=imgs_dict, sensor=sensor_str, page_info=page_info)
