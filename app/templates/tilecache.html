@@ -23,6 +23,10 @@
 		[{{ scn_obj.South_Lat }}, {{ scn_obj.East_Lon }}],
 		[{{ scn_obj.South_Lat }}, {{ scn_obj.West_Lon }}]
                 ]).addTo(mymap);
+
+         var lyr = L.tileLayer('{{ scn_path }}/{z}/{x}/{y}.png', {tms: true, opacity: 1, attribution: "&copy; Aberystwyth University", minZoom: 2, maxZoom: 12});
+         var overlaymaps = {"{{ sensor }}": lyr}
+         L.control.layers(overlaymaps, {collapsed: false}).addTo(mymap);
 </script>
 
 

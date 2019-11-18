@@ -303,7 +303,7 @@ def tilecache():
         tc_lcl_path = scn_obj.ExtendedInfo["tilecache"]["tilecachepath"]
         tc_glb_path = tc_lcl_path.replace(EODD_WEB_PATHS["LCL"], EODD_WEB_PATHS["GLB"])
 
-        return render_template('tilecache.html', scn=scn_sen_id, sensor=sensor_str, scn_img=tc_glb_path, scn_obj=scn_obj)
+        return render_template('tilecache.html', scn=scn_sen_id, sensor=sensor_str, scn_path=tc_glb_path, scn_obj=scn_obj)
 
     else:
         print("Error - didn't not find the sensor ({}) object.".format(sensor_str))
