@@ -147,7 +147,14 @@ def imagelist():
                 print(glb_qk_sm_img)
                 imgs_dict[scn.PID]['img'] = glb_qk_sm_img
 
-            page_info = {"n_pages": n_full_pages + 1, "c_page": disp_page}
+            page_info = {"c_page": disp_page}
+            if n_full_pages > 0:
+                page_info['n_pages'] = n_full_pages
+                if remain_scns > 0:
+                    page_info['n_pages'] = n_full_pages + 1
+            else:
+                page_info['n_pages'] = 1
+
             if disp_page < n_full_pages + 1:
                 page_info['n_page'] = disp_page + 1
             elif disp_page > 0:
