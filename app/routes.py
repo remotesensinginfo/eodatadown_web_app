@@ -35,7 +35,7 @@ def index():
     return render_template('index.html', form=form)
 
 
-@app.route('/imagelist', methods=['POST', 'GET'])
+@app.route('/imagelist', methods=['GET', 'POST'])
 def imagelist():
     try:
         sys_main_obj = eodatadown.eodatadownsystemmain.EODataDownSystemMain()
@@ -68,10 +68,11 @@ def imagelist():
             flash('Session did not have any query information, please run query again...')
             return redirect('/')
         disp_page = 0
-        if 'page' in form:
-            disp_page = int(form['page'])
-        elif 'page' in session:
-            disp_page = int(session['page'])
+        if not request.args.get("page"):
+            if 'page' in session:
+                disp_page = int(session['page'])
+        else:
+            disp_page = int(request.args.get('page'))
 
 
 
@@ -115,8 +116,8 @@ def imagelist():
                 elif disp_page > n_full_pages:
                     start_rec = n_full_pages * N_SCNS_PAGE
                     n_pg_scns = remain_scns
-                    session['page'] = n_full_pages+1
-                    disp_page = n_full_pages+1
+                    session['page'] = n_full_pages
+                    disp_page = n_full_pages
                 scns = sensor_obj.query_scn_records_date(start_date_obj, end_date_obj, start_rec, n_pg_scns, valid=True)
             else:
                 scns = sensor_obj.query_scn_records_date(start_date_obj, end_date_obj, 0, remain_scns, valid=True)
@@ -155,9 +156,9 @@ def imagelist():
             else:
                 page_info['n_pages'] = 1
 
-            if disp_page < n_full_pages + 1:
+            if disp_page < page_info['n_pages']-1:
                 page_info['n_page'] = disp_page + 1
-            elif disp_page > 0:
+            if disp_page > 0:
                 page_info['p_page'] = disp_page - 1
 
             return render_template('imagelist.html', scns=imgs_dict, sensor=sensor_str, page_info=page_info)

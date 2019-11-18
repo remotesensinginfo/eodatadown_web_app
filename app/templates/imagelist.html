@@ -7,9 +7,9 @@
             {% if 'p_page' in page_info %}
             <a href='imagelist?page={{ page_info.p_page }}'>Previous</a> ...
             {% endif %}
-            Page {{ page_info.c_page + 1 }} of {{ page_info.n_pages + 1 }}
+            Page {{ page_info.c_page + 1 }} of {{ page_info.n_pages }}
             {% if 'n_page' in page_info %}
-            ... <a href='imagelist?page={{ page_info.p_page }}'>Next</a>
+            ... <a href='imagelist?page={{ page_info.n_page }}'>Next</a>
             {% endif %}
         </p>
         
@@ -17,11 +17,11 @@
 
         <p>
             {% if 'p_page' in page_info %}
-            <a href='imagelist?page={{ page_info.p_page }}'> Previous</a>
+            <a href='imagelist?page={{ page_info.p_page }}'>Previous</a> ...
             {% endif %}
-            ... Page {{ page_info.c_page + 1 }} of {{ page_info.n_pages + 1 }} ...
+            Page {{ page_info.c_page + 1 }} of {{ page_info.n_pages }}
             {% if 'n_page' in page_info %}
-            <a href='imagelist?page={{ page_info.p_page }}'> Next </a>
+            ... <a href='imagelist?page={{ page_info.n_page }}'>Next</a>
             {% endif %}
         </p>
         
