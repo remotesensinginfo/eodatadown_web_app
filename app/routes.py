@@ -60,13 +60,17 @@ def imagelist():
         disp_page = 0
     else:
         # Use existing query
-        start_date = session['start_date']
-        end_date = session['end_date']
-        sensor_str = session['sensor_field']
+        if ('start_date' in session) and ('end_date' in session) and ('sensor_str' in session):
+            start_date = session['start_date']
+            end_date = session['end_date']
+            sensor_str = session['sensor_str']
+        else:
+            flash('Session did not have any query information, please run query again...')
+            return redirect('/')
         disp_page = 0
         if 'page' in form:
             disp_page = int(form['page'])
-        else:
+        elif 'page' in session:
             disp_page = int(session['page'])
 
 
