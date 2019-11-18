@@ -17,9 +17,9 @@
         {% for scn in scns %}
 	    <a href="{{ scns[scn].img }}">
                 <figure>
-		    <img src="{{ scns[scn].img }}", alt="{{ scns[scn].id }}" />
+		    <img class="image" src="{{ scns[scn].img }}" alt="{{ scns[scn].id }}" />
 		</figure>
-		<p>{{ scns[scn].date }} </p>
+		<p>{{ scns[scn].date }}</p>
             </a>
         {% endfor %}
         </div>
