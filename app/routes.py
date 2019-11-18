@@ -16,7 +16,7 @@ from wtforms.validators import Required
 import eodatadown.eodatadownsystemmain
 
 CONFIG_FILE = "/bigdata/eodd_wales_ard/scripts/eodd/config/EODataDownBaseConfig_psql.json"
-EODD_WEB_PATHS = {"LCL":"/bigdata/eodd_wales_ard/web", "GLB":"http://144.124.81.196"}
+EODD_WEB_PATHS = {"LCL":"/bigdata/eodd_wales_ard/web", "GLB":"http://144.124.81.196/eoddweb"}
 
 N_SCNS_PAGE = 24
 
@@ -312,3 +312,5 @@ def tilecache():
 
     flash('Should not have got here, some unspecified error, please try again.')
     return redirect('/')
+
+
