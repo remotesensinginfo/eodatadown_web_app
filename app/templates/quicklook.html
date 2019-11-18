@@ -98,7 +98,7 @@
     </table>
     {% endif %}
 
-    <div id="mapid" style="width: 600px; height: 400px; margin: auto;"></div>
+    <div id="mapid" style="width: 100%; height: 600px; margin: auto;"></div>
     <script>
 	var mymap = L.map('mapid').setView([{{ scn_obj.South_Lat + ((scn_obj.North_Lat - scn_obj.South_Lat)/2) }}, {{ scn_obj.West_Lon + ((scn_obj.East_Lon - scn_obj.West_Lon)/2) }}], 6);
 
