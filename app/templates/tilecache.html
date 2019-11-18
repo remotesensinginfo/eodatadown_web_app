@@ -2,40 +2,96 @@
 
 {% block content %}
 
-        <h2>{{ job.jobname }} (Version {{ job.version }})</h2>
+<h2>{{ scn }}</h2>
 
-    	<table border="black">
-        <thead>
+    {% if sensor == 'Landsat' %}
+    <table border="black">
+    <thead>
 		<tr>
-			<th>Task ID</th>
-			<th>Start Time</th>
-			<th>End Time</th>
-            <th>Completed?</th>
+			<th>Field</th>
+			<th>Value</th>
 		</tr>
         </thead>
         <tbody>
-        {% for task in tasks %}
-		<tr onclick="window.location='/taskinfo?jobname={{ job.jobname }}&version={{ job.version }}&taskid={{ task.task_id }}'" style="tr:hover: {background-color:yellow;}">
-		<td>
-            <a href='/taskinfo?jobname={{ job.jobname }}&version={{ job.version }}&taskid={{ task.task_id }}' >
-                {{ task.task_id }}
-            </a>
-        </td>
-		<td>{{ task.start.year }}/{{ task.start.month }}/{{ task.start.day }} {{ task.start.hour }}:{{ task.start.minute }}:{{ task.start.second }}</td>
-		<td>
-            {% if task.completed %}
-            {{ task.end.year }}/{{ task.end.month }}/{{ task.end.day }} {{ task.end.hour }}:{{ task.end.minute }}:{{ task.end.second }}
-            {% endif %}
-        </td>
-        {% if task.completed %}
-            <td style="background-color:green;text-align:center;vertical-align:middle;color:black;font-weight:bold;"> Completed </td>
-        {% else %}
-            <td style="background-color:red;text-align:center;vertical-align:middle;color:black;font-weight:bold;"> Not Completed </td>
-        {% endif %}
-		</tr>
-        {% endfor %}
+        <tr><td>Scene ID</td><td>{{ scn_obj.Scene_ID }}</td></tr>
+        <tr><td>Product ID</td><td>{{ scn_obj.Product_ID }}</td></tr>
+        <tr><td>Spacecraft ID</td><td>{{ scn_obj.Spacecraft_ID }}</td></tr>
+        <tr><td>Sensor ID</td><td>{{ scn_obj.Sensor_ID }}</td></tr>
+        <tr><td>Date Acquired</td><td>{{ scn_obj.Date_Acquired }}</td></tr>
+        <tr><td>Collection Number</td><td>{{ scn_obj.Collection_Number }}</td></tr>
+        <tr><td>Collection Catagory</td><td>{{ scn_obj.Collection_Catagory }}</td></tr>
+        <tr><td>Sensing Time</td><td>{{ scn_obj.Sensing_Time }}</td></tr>
+        <tr><td>Data Type</td><td>{{ scn_obj.Data_Type }}</td></tr>
+        <tr><td>WRS Path</td><td>{{ scn_obj.WRS_Path }}</td></tr>
+        <tr><td>WRS Row</td><td>{{ scn_obj.WRS_Row }}</td></tr>
+        <tr><td>Cloud Cover</td><td>{{ scn_obj.Cloud_Cover }}</td></tr>
+        <tr><td>North Lat</td><td>{{ scn_obj.North_Lat }}</td></tr>
+        <tr><td>South Lat</td><td>{{ scn_obj.South_Lat }}</td></tr>
+        <tr><td>East Lon</td><td>{{ scn_obj.East_Lon }}</td></tr>
+        <tr><td>West Lon</td><td>{{ scn_obj.West_Lon }}</td></tr>
         </tbody>
-        </table>
+    </table>
+    {% endif %}
 
-    
+    {% if sensor == 'Sentinel-1' %}
+    <table border="black">
+    <thead>
+		<tr>
+			<th>Field</th>
+			<th>Value</th>
+		</tr>
+        </thead>
+        <tbody>
+        <tr><td>Scene ID</td><td>{{ scn_obj.Scene_ID }}</td></tr>
+        <tr><td>Product Name</td><td>{{ scn_obj.Product_Name }}</td></tr>
+        <tr><td>Product File ID</td><td>{{ scn_obj.Product_File_ID }}</td></tr>
+        <tr><td>ABS Orbit</td><td>{{ scn_obj.ABS_Orbit }}</td></tr>
+        <tr><td>Relative Orbit</td><td>{{ scn_obj.Rel_Orbit }}</td></tr>
+        <tr><td>Doppler</td><td>{{ scn_obj.Doppler }}</td></tr>
+        <tr><td>Flight Direction</td><td>{{ scn_obj.Flight_Direction }}</td></tr>
+        <tr><td>Granule Name</td><td>{{ scn_obj.Granule_Name }}</td></tr>
+        <tr><td>Granule Type</td><td>{{ scn_obj.Granule_Type }}</td></tr>
+        <tr><td>Incidence Angle</td><td>{{ scn_obj.Incidence_Angle }}</td></tr>
+        <tr><td>Look Direction</td><td>{{ scn_obj.Look_Direction }}</td></tr>
+        <tr><td>Platform</td><td>{{ scn_obj.Platform }}</td></tr>
+        <tr><td>Polarization</td><td>{{ scn_obj.Polarization }}</td></tr>
+        <tr><td>Process Date</td><td>{{ scn_obj.Process_Date }}</td></tr>
+        <tr><td>Process Description</td><td>{{ scn_obj.Process_Description }}</td></tr>
+        <tr><td>Process Level</td><td>{{ scn_obj.Process_Level }}</td></tr>
+        <tr><td>Process Type</td><td>{{ scn_obj.Process_Type }}</td></tr>
+        <tr><td>Process Type Disp.</td><td>{{ scn_obj.Process_Type_Disp }}</td></tr>
+        <tr><td>Acquisition Date</td><td>{{ scn_obj.Acquisition_Date }}</td></tr>
+        <tr><td>Sensor</td><td>{{ scn_obj.Sensor }}</td></tr>
+        <tr><td>North Lat</td><td>{{ scn_obj.North_Lat }}</td></tr>
+        <tr><td>South Lat</td><td>{{ scn_obj.South_Lat }}</td></tr>
+        <tr><td>East Lon</td><td>{{ scn_obj.East_Lon }}</td></tr>
+        <tr><td>West Lon</td><td>{{ scn_obj.West_Lon }}</td></tr>
+        </tbody>
+    </table>
+    {% endif %}
+
+    {% if sensor == 'Sentinel-2' %}
+    <table border="black">
+    <thead>
+		<tr>
+			<th>Field</th>
+			<th>Value</th>
+		</tr>
+        </thead>
+        <tbody>
+        <tr><td>Granule ID</td><td>{{ scn_obj.Granule_ID }}</td></tr>
+        <tr><td>Product ID</td><td>{{ scn_obj.Product_ID }}</td></tr>
+        <tr><td>Datatake Identifier</td><td>{{ scn_obj.Datatake_Identifier }}</td></tr>
+        <tr><td>MGRS Tile</td><td>{{ scn_obj.Mgrs_Tile }}</td></tr>
+        <tr><td>Sensing Time</td><td>{{ scn_obj.Sensing_Time }}</td></tr>
+        <tr><td>Geometric Quality Flag</td><td>{{ scn_obj.Geometric_Quality_Flag }}</td></tr>
+        <tr><td>Cloud Cover</td><td>{{ scn_obj.Cloud_Cover }}</td></tr>
+        <tr><td>North Lat</td><td>{{ scn_obj.North_Lat }}</td></tr>
+        <tr><td>South Lat</td><td>{{ scn_obj.South_Lat }}</td></tr>
+        <tr><td>East Lon</td><td>{{ scn_obj.East_Lon }}</td></tr>
+        <tr><td>West Lon</td><td>{{ scn_obj.West_Lon }}</td></tr>
+        </tbody>
+    </table>
+    {% endif %}
+
 {% endblock %}

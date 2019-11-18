@@ -244,3 +244,71 @@ def quicklook():
 
     flash('Should not have got here, some unspecified error, please try again.')
     return redirect('/')
+
+
+@app.route('/tilecache', methods=['GET'])
+def tilecache():
+    if not request.args.get("scn"):
+        flash('A scene was not specified.')
+        return redirect('/imagelist')
+    scn_id = request.args.get("scn")
+    try:
+        sys_main_obj = eodatadown.eodatadownsystemmain.EODataDownSystemMain()
+        sys_main_obj.parse_config(CONFIG_FILE)
+        sensor_sys_objs = sys_main_obj.get_sensors()
+    except Exception as e:
+        print(e)
+        flash('Something has gone wrong either the database was found or there is an error with the configuration file.')
+        return redirect('/')
+
+    if 'sensor_str' in session:
+        sensor_str = session['sensor_str']
+    else:
+        flash('Session did not have any query information, please run query again...')
+        return redirect('/')
+
+    sensor_obj = None
+    found_sensor_obj = False
+    for sensor_sys_obj in sensor_sys_objs:
+        if (sensor_str == 'Landsat') and (sensor_sys_obj.get_sensor_name() == "LandsatGOOG"):
+            sensor_obj = sensor_sys_obj
+            found_sensor_obj = True
+        elif (sensor_str == 'Sentinel-1') and (sensor_sys_obj.get_sensor_name() == "Sentinel1ASF"):
+            sensor_obj = sensor_sys_obj
+            found_sensor_obj = True
+        elif (sensor_str == 'Sentinel-2') and (sensor_sys_obj.get_sensor_name() == "Sentinel2GOOG"):
+            sensor_obj = sensor_sys_obj
+            found_sensor_obj = True
+
+    if found_sensor_obj:
+        try:
+            scn_obj = sensor_obj.get_scn_record(scn_id)
+        except Exception as e:
+            print(e)
+            print("Error - did not file the scene requested: ".format(sensor_str))
+            flash('Something has gone wrong could not find the sensor ({}) specified.'.format(sensor_str))
+            return redirect('/')
+
+        scn_sen_id = ""
+        if sensor_str == 'Landsat':
+            scn_sen_id = scn_obj.Scene_ID
+        elif sensor_str == 'Sentinel-1':
+            scn_sen_id = scn_obj.Scene_ID
+        elif sensor_str == 'Sentinel-2':
+            scn_sen_id = scn_obj.Granule_ID
+        else:
+            flash('Something has gone wrong could not find the sensor specified.')
+            return redirect('/')
+
+        tc_lcl_path = scn_obj.ExtendedInfo["tilecache"]["tilecachepath"]
+        tc_glb_path = tc_lcl_path.replace(EODD_WEB_PATHS["LCL"], EODD_WEB_PATHS["GLB"])
+
+        return render_template('tilecache.html', scn=scn_sen_id, sensor=sensor_str, scn_img=tc_glb_path, scn_obj=scn_obj)
+
+    else:
+        print("Error - didn't not find the sensor ({}) object.".format(sensor_str))
+        flash('Something has gone wrong could not find the sensor ({}) specified.'.format(sensor_str))
+        return redirect('/')
+
+    flash('Should not have got here, some unspecified error, please try again.')
+    return redirect('/')
