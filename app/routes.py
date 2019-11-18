@@ -174,7 +174,7 @@ def imagelist():
 
 
 @app.route('/quicklook', methods=['GET'])
-def imagelist():
+def quicklook():
     if not request.args.get("scn"):
         flash('A scene was not specified.')
         return redirect('/imagelist')
