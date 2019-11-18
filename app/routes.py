@@ -47,7 +47,7 @@ def imagelist():
         return redirect('/')
     
     form = request.form
-    if 'start_date' in session:
+    if 'start_date' in form:
         # New Query.
         start_date = form['start_date']
         end_date = form['end_date']
@@ -71,8 +71,8 @@ def imagelist():
 
 
 
-    start_date_obj = datetime.datetime.strptime(start_date, '%Y\%m%d')
-    end_date_obj = datetime.datetime.strptime(end_date, '%Y\%m%d')
+    start_date_obj = datetime.datetime.strptime(start_date, '%Y/%m/%d')
+    end_date_obj = datetime.datetime.strptime(end_date, '%Y/%m/%d')
     
     print(start_date)
     print(end_date)
@@ -99,7 +99,7 @@ def imagelist():
         print("N Scenes: {}".format(n_scns))
 
         n_full_pages = math.floor(n_scns / N_SCNS_PAGE)
-        remain_scns = n_scns - ()
+        remain_scns = n_scns - (n_full_pages * N_SCNS_PAGE)
         print("{} Full Pages with {} remaining".format(n_full_pages, remain_scns))
 
         if n_full_pages > 0:
@@ -129,7 +129,9 @@ def imagelist():
                 imgs_dict[scn.PID]['id'] = scn.Granule_ID
                 imgs_dict[scn.PID]['date'] = scn.Sensing_Time.strftime('%Y-%m-%d')
             else:
-                raise Exception("Do not recognise the sensor provided.")
+                flash('Something has gone wrong could not find the sensor specfied.')
+                return redirect('/')
+                
             qk_imgs = scn.ExtendedInfo["quicklook"]["quicklookimgs"]
             qk_sm_img = ''
             for qk_img in qk_imgs:
