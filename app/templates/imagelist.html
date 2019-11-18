@@ -13,9 +13,13 @@
             {% endif %}
         </p>
         
-        <div class="flex-container">
+        <div class="contianer">
         {% for scn in scns %}
-            <div class="flex-item">{{ scn['PID'] }}</div>
+	    <a href="{{ scns[scn].img }}">
+                <figure>
+		    <img src="{{ scns[scn].img }}", alt="{{ scns[scn].id }}" />
+		</figure>
+            </a>
         {% endfor %}
         </div>
 

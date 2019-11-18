@@ -18,7 +18,7 @@ import eodatadown.eodatadownsystemmain
 CONFIG_FILE = "/bigdata/eodd_wales_ard/scripts/eodd/config/EODataDownBaseConfig_psql.json"
 EODD_WEB_PATHS = {"LCL":"/bigdata/eodd_wales_ard/web", "GLB":"http://144.124.81.196"}
 
-N_SCNS_PAGE = 16
+N_SCNS_PAGE = 24
 
 class SelectDataForm(FlaskForm):
     end_date = DateField('End', validators=[Required()], format='%Y-%m-%d', default=datetime.date(1980, 1, 1), description='End Date')
