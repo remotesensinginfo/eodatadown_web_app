@@ -16,6 +16,7 @@ from wtforms.validators import Required
 import eodatadown.eodatadownsystemmain
 
 CONFIG_FILE = "/bigdata/eodd_wales_ard/scripts/eodd/config/EODataDownBaseConfig_psql.json"
+EODD_WEB_PATHS = {"LCL":"/bigdata/eodd_wales_ard/web", "GLB":"http://144.124.81.196"}
 
 N_SCNS_PAGE = 16
 
@@ -34,7 +35,7 @@ def index():
     return render_template('index.html', form=form)
 
 
-@app.route('/imagelist', methods=['GET', 'POST'])
+@app.route('/imagelist', methods=['POST', 'GET'])
 def imagelist():
     try:
         sys_main_obj = eodatadown.eodatadownsystemmain.EODataDownSystemMain()
@@ -46,9 +47,29 @@ def imagelist():
         return redirect('/')
     
     form = request.form
-    start_date = form['start_date']
-    end_date = form['end_date']
-    sensor_str = form['sensor_field']
+    if 'start_date' in session:
+        # New Query.
+        start_date = form['start_date']
+        end_date = form['end_date']
+        sensor_str = form['sensor_field']
+
+        session['start_date'] = start_date
+        session['end_date'] = end_date
+        session['sensor_str'] = sensor_str
+        session['page'] = 0
+        disp_page = 0
+    else:
+        # Use existing query
+        start_date = session['start_date']
+        end_date = session['end_date']
+        sensor_str = session['sensor_field']
+        disp_page = 0
+        if 'page' in form:
+            disp_page = int(form['page'])
+        else:
+            disp_page = int(session['page'])
+
+
 
     start_date_obj = datetime.datetime.strptime(start_date, '%Y\%m%d')
     end_date_obj = datetime.datetime.strptime(end_date, '%Y\%m%d')
@@ -78,14 +99,23 @@ def imagelist():
         print("N Scenes: {}".format(n_scns))
 
         n_full_pages = math.floor(n_scns / N_SCNS_PAGE)
-        remain_scns = n_scns - (n_full_pages * N_SCNS_PAGE)
+        remain_scns = n_scns - ()
         print("{} Full Pages with {} remaining".format(n_full_pages, remain_scns))
-        start_rec = 0
-        if n_full_pages > 0:
-            scns = sensor_obj.query_scn_records_date(start_date, end_date, start_rec, N_SCNS_PAGE, valid=True)
-        else:
-            scns = sensor_obj.query_scn_records_date(start_date, end_date, start_rec, remain_scns, valid=True)
 
+        if n_full_pages > 0:
+            start_rec = 0
+            n_pg_scns = N_SCNS_PAGE
+            if (disp_page >= 0) and (disp_page <= n_full_pages):
+                start_rec = disp_page * N_SCNS_PAGE
+                session['page'] = disp_page
+            elif disp_page > n_full_pages:
+                start_rec = n_full_pages * N_SCNS_PAGE
+                n_pg_scns = remain_scns
+                session['page'] = n_full_pages+1
+                disp_page = n_full_pages+1
+            scns = sensor_obj.query_scn_records_date(start_date, end_date, start_rec, n_pg_scns, valid=True)
+        else:
+            scns = sensor_obj.query_scn_records_date(start_date, end_date, 0, remain_scns, valid=True)
 
         for scn in scns:
             imgs_dict[scn.PID] = dict()
@@ -106,10 +136,19 @@ def imagelist():
                 if '250px' in qk_img:
                     qk_sm_img = qk_img
                     break
-            imgs_dict[scn.PID]['img'] = qk_sm_img
+            glb_qk_sm_img = qk_sm_img.replace(EODD_WEB_PATHS["LCL"], EODD_WEB_PATHS["GLB"])
+            print(qk_sm_img)
+            print(glb_qk_sm_img)
+            imgs_dict[scn.PID]['img'] = glb_qk_sm_img
     else:
         print("Error - didn't not find the sensor object.")
         flash('Something has gone wrong could not find the sensor specfied.')
         return redirect('/')
-    
-    return render_template('imagelist.html', scns=imgs_dict, sensor=sensor_str )
+
+    page_info = {"n_pages":n_full_pages+1, "c_page":disp_page}
+    if disp_page < n_full_pages+1:
+        page_info['n_page'] = disp_page + 1
+    elif disp_page > 0:
+        page_info['p_page'] = disp_page - 1
+
+    return render_template('imagelist.html', scns=imgs_dict, sensor=sensor_str, page_info=page_info)
