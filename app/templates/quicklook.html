@@ -2,40 +2,11 @@
 
 {% block content %}
 
-        <h2>Task: {{ task.task_id }} for job {{ task.job_name }} (Version {{ task.version }})</h2>
+        <h2>{{ scn }}</h2>
 
-        <p>The job started at {{ task.start.hour }}:{{ task.start.minute }}:{{ task.start.second }} on
-            {{ task.start.year }}/{{ task.start.month }}/{{ task.start.day }}
-            {% if task.completed %}
-                and completed at {{ task.end.hour }}:{{ task.end.minute }}:{{ task.end.second }} on
-                {{ task.end.year }}/{{ task.end.month }}/{{ task.end.day }}.
-            {% else %}
-                but failed to complete.
-            {% endif %}
-        </p>
-
-        <h3>Parameters of the task:</h3>
-        <pre>
-        <code>
-{{ task.params }}
-        </code>
-        </pre>
-
-        <h3>Updates while the job was running:</h3>
-        <pre>
-        <code>
-{{ task.update_info }}
-        </code>
-        </pre>
-
-        {% if task.completed %}
-        <h3>Outputs when job completed:</h3>
-        <pre>
-        <code>
-{{ task.end_info }}
-        </code>
-        </pre>
-        {% endif %}
+        <figure>
+            <img src="{{ img }}", alt="{{ scn }}" />
+        </figure>
 
 
 {% endblock %}

@@ -15,12 +15,12 @@
         
         <div class="contianer">
         {% for scn in scns %}
-	    <a href="{{ scns[scn].img }}">
+	    <a href="quicklook?scn={{ scn }}">
                 <figure>
-		    <img src="{{ scns[scn].img }}", alt="{{ scns[scn].id }}" />
-		</figure>
-		<p>{{ scns[scn].date }} </p>
-            </a>
+                    <img src="{{ scns[scn].img }}", alt="{{ scns[scn].id }}" />
+                </figure>
+            <p>{{ scns[scn].date }} </p>
+        </a>
         {% endfor %}
         </div>
 
