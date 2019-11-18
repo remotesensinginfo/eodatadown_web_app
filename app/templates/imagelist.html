@@ -13,7 +13,11 @@
             {% endif %}
         </p>
         
-    <p> HELLO WORLD </p>
+        <div class="flex-container">
+        {% for scn in scns %}
+            <div class="flex-item">{{ scn['PID'] }}</div>
+        {% endfor %}
+        </div>
 
         <p>
             {% if 'p_page' in page_info %}
