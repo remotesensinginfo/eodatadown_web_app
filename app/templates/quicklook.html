@@ -4,9 +4,9 @@
 
     <h2>{{ scn }}</h2>
 
-    <figure>
+    <div style="margin: auto; padding: 10px;">
         <img src="{{ scn_img }}", alt="{{ scn }}" />
-    </figure>
+    </div>
     
     {% if sensor == 'Landsat' %}
     <table border="black">
@@ -98,9 +98,9 @@
     </table>
     {% endif %}
 
-    <div id="mapid" style="width: 600px; height: 400px;"></div>
+    <div id="mapid" style="width: 600px; height: 400px; margin: auto;"></div>
     <script>
-	var mymap = L.map('mapid').setView([{{ scn_obj.West_Lon + (scn_obj.West_Lon + scn_obj.East_Lon)/2 }}, {{ scn_obj.South_Lat + (scn_obj.South_Lat + scn_obj.North_Lat)/2 }}], 13);
+	var mymap = L.map('mapid').setView([{{ scn_obj.South_Lat + ((scn_obj.North_Lat - scn_obj.South_Lat)/2) }}, {{ scn_obj.West_Lon + ((scn_obj.East_Lon - scn_obj.West_Lon)/2) }}], 6);
 
 	L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
 		maxZoom: 18,
@@ -110,6 +110,14 @@
 		id: 'mapbox.streets'
 	}).addTo(mymap);
 
+        var polygon = L.polygon([
+		[{{ scn_obj.North_Lat }}, {{ scn_obj.West_Lon }}],
+                [{{ scn_obj.North_Lat }}, {{ scn_obj.East_Lon }}],
+		[{{ scn_obj.South_Lat }}, {{ scn_obj.East_Lon }}],
+		[{{ scn_obj.South_Lat }}, {{ scn_obj.West_Lon }}]
+                ]).addTo(mymap);
+        
+        polygon.bindPopup("{{ scn }}");
 </script>
 
 {% endblock %}
