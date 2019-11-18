@@ -1,18 +1,29 @@
 {% extends "base.html" %}
 
 {% block content %}
-        <h2>Jobs</h2>
+        <h2>{{ sensor }} Scenes</h2>
+
+        <p>
+            {% if 'p_page' in page_info %}
+            <a href='imagelist?page={{ page_info.p_page }}'> Previous</a>
+            {% endif %}
+            ... Page {{ page_info.c_page + 1 }} of {{ page_info.n_pages + 1 }} ...
+            {% if 'n_page' in page_info %}
+            <a href='imagelist?page={{ page_info.p_page }}'> Next </a>
+            {% endif %}
+        </p>
         
-        <ol>
-	        {% for job in jobs %}
-	        <li>Job: {{ job.jobname }} (Version {{ job.version }}):
-                <ul>
-		        <li> <a href='/tasklist?jobname={{ job.jobname }}&version={{ job.version }}&status=all'>All</a>
-		        <li> <a href='/tasklist?jobname={{ job.jobname }}&version={{ job.version }}&status=uncomplete'>Uncomplete</a>
-                </ul>
-		    </li>
-	        {% endfor %}
-	    </ol>
+    <p> HELLO WORLD </p>
+
+        <p>
+            {% if 'p_page' in page_info %}
+            <a href='imagelist?page={{ page_info.p_page }}'> Previous</a>
+            {% endif %}
+            ... Page {{ page_info.c_page + 1 }} of {{ page_info.n_pages + 1 }} ...
+            {% if 'n_page' in page_info %}
+            <a href='imagelist?page={{ page_info.p_page }}'> Next </a>
+            {% endif %}
+        </p>
         
 {% endblock %}
 

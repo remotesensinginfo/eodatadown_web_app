@@ -115,7 +115,7 @@ def imagelist():
                     disp_page = n_full_pages+1
                 scns = sensor_obj.query_scn_records_date(start_date_obj, end_date_obj, start_rec, n_pg_scns, valid=True)
             else:
-                scns = sensor_obj.query_scn_records_date(start_datei_obj, end_date_obj, 0, remain_scns, valid=True)
+                scns = sensor_obj.query_scn_records_date(start_date_obj, end_date_obj, 0, remain_scns, valid=True)
 
             for scn in scns:
                 imgs_dict[scn.PID] = dict()
