@@ -21,8 +21,8 @@ EODD_WEB_PATHS = {"LCL":"/bigdata/eodd_wales_ard/web", "GLB":"http://144.124.81.
 N_SCNS_PAGE = 16
 
 class SelectDataForm(FlaskForm):
-    start_date = DateField('Start', validators=[Required()], format='%Y/%m/%d', default=datetime.date(1980, 1, 1), description='Start Date')
-    end_date = DateField('End', validators=[Required()], format='%Y/%m/%d', default=datetime.date.today, description='End Date')
+    end_date = DateField('End', validators=[Required()], format='%Y-%m-%d', default=datetime.date(1980, 1, 1), description='End Date')
+    start_date = DateField('Start', validators=[Required()], format='%Y-%m-%d', default=datetime.date.today, description='Start Date')
     sensor_field = SelectField('Sensor', choices=[('Landsat', 'Landsat'), ('Sentinel-1', 'Sentinel-1'), ('Sentinel-2', 'Sentinel-2')] , validators=[Required()], default='Landsat')
     go_submit = SubmitField('Go')
 
@@ -71,11 +71,11 @@ def imagelist():
 
 
 
-    start_date_obj = datetime.datetime.strptime(start_date, '%Y/%m/%d')
-    end_date_obj = datetime.datetime.strptime(end_date, '%Y/%m/%d')
+    start_date_obj = datetime.datetime.strptime(start_date, '%Y-%m-%d')
+    end_date_obj = datetime.datetime.strptime(end_date, '%Y-%m-%d')
     
-    print(start_date)
-    print(end_date)
+    print(start_date_obj)
+    print(end_date_obj)
     print(sensor_str)
     print("HERE - 5")
     
@@ -113,9 +113,9 @@ def imagelist():
                     n_pg_scns = remain_scns
                     session['page'] = n_full_pages+1
                     disp_page = n_full_pages+1
-                scns = sensor_obj.query_scn_records_date(start_date, end_date, start_rec, n_pg_scns, valid=True)
+                scns = sensor_obj.query_scn_records_date(start_date_obj, end_date_obj, start_rec, n_pg_scns, valid=True)
             else:
-                scns = sensor_obj.query_scn_records_date(start_date, end_date, 0, remain_scns, valid=True)
+                scns = sensor_obj.query_scn_records_date(start_datei_obj, end_date_obj, 0, remain_scns, valid=True)
 
             for scn in scns:
                 imgs_dict[scn.PID] = dict()
@@ -142,10 +142,6 @@ def imagelist():
                 print(qk_sm_img)
                 print(glb_qk_sm_img)
                 imgs_dict[scn.PID]['img'] = glb_qk_sm_img
-            else:
-                print("Error - didn't not find the sensor object.")
-                flash('Something has gone wrong could not find any scenes.')
-                return redirect('/')
 
             page_info = {"n_pages": n_full_pages + 1, "c_page": disp_page}
             if disp_page < n_full_pages + 1:
@@ -154,6 +150,9 @@ def imagelist():
                 page_info['p_page'] = disp_page - 1
 
             return render_template('imagelist.html', scns=imgs_dict, sensor=sensor_str, page_info=page_info)
+        else:
+            flash("Did not find any scenes within query parameters, please change and try again")
+            return redirect('/')
     else:
         print("Error - didn't not find the sensor object.")
         flash('Something has gone wrong could not find the sensor specfied.')
