@@ -11,13 +11,18 @@
         var googlearth = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{maxZoom: 20, subdomains:['mt0','mt1','mt2','mt3'], attribution: "&copy; Google"})
         var eoddlyr = L.tileLayer('{{ scn_path }}/{z}/{x}/{y}.png', {tms: true, opacity: 1, attribution: "&copy; Aberystwyth University", minZoom: 2, maxZoom: 12});
 
-        var mymap = L.map('mapid', {center: [{{ scn_obj.South_Lat + ((scn_obj.North_Lat - scn_obj.South_Lat)/2) }}, {{ scn_obj.West_Lon + ((scn_obj.East_Lon - scn_obj.West_Lon)/2) }}], zoom:6, minZoom:2, maxZoom: 12, layers:[osm, eoddlyr], fullscreenControl: true});
+        var mymap = L.map('mapid', {center: [{{ scn_obj.South_Lat + ((scn_obj.North_Lat - scn_obj.South_Lat)/2) }}, {{ scn_obj.West_Lon + ((scn_obj.East_Lon - scn_obj.West_Lon)/2) }}],
+                                    zoom:6,
+                                    minZoom:2,
+                                    maxZoom: 12,
+                                    layers:[osm, eoddlyr],
+                                    fullscreenControl: true});
 
          var overlaymaps = {"{{ sensor }}": eoddlyr}
          var basemaps = {"Open Street Map": osm, "Google Earth": googlearth}
          L.control.layers(basemaps, overlaymaps, {collapsed: true}).addTo(mymap);
     </script>
-    
+
     {% if sensor == 'Landsat' %}
     <table border="black">
     <thead>
