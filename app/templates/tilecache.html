@@ -26,11 +26,13 @@
          var overlaymaps = {"{{ sensor }}": eoddlyr}
          var basemaps = {"Open Street Map": osm, "Google Earth": googlearth}
          L.control.layers(basemaps, overlaymaps, {collapsed: true}).addTo(mymap);
-
          // create fullscreen control
 		var fsControl = L.control.fullscreen();
 		// add fullscreen control to the map
 		mymap.addControl(fsControl);
+
+		// Fit to overlay bounds (SW and NE points with (lat, lon))
+		mymap.fitBounds([[{{ scn_obj.South_Lat }}, {{ scn_obj.West_Lon }}], [{{ scn_obj.North_Lat }}, {{ scn_obj.East_Lon }}]])
 
     </script>
 
@@ -131,8 +133,6 @@
     {{ scn_obj.ARDProduct_Path }}
     </code>
 
-    <p><a href="/imagelist"> Back to image list </a></p>
-
     <h3> Open in Desktop GIS </h3>
     <p>
         To use within a desktop GIS two options are available, the first is to get the original ARD GeoTIFF files from
@@ -148,5 +148,7 @@
     <p>
         For more information on the MBTiles pre-rendered file please see the <a href="/background">background page </a>.
     </p>
+
+     <p><a href="/imagelist"> Back to image list </a></p>
 
 {% endblock %}
