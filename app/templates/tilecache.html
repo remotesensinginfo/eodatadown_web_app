@@ -18,7 +18,7 @@
         var eoddlyr = L.tileLayer.mbTiles('{{ scn_path }}', {minZoom: 0, maxZoom: 12, attribution: '&copy; <a href="http://www.aber.ac.uk">Aberystwyth University</a>'});
 
         var mymap = L.map('mapid', {center: [{{ scn_obj.South_Lat + ((scn_obj.North_Lat - scn_obj.South_Lat)/2) }}, {{ scn_obj.West_Lon + ((scn_obj.East_Lon - scn_obj.West_Lon)/2) }}],
-                                    zoom:6,
+                                    zoom:10,
                                     minZoom:2,
                                     maxZoom: 12,
                                     layers:[osm, eoddlyr]});
@@ -35,6 +35,7 @@
 		mymap.fitBounds([[{{ scn_obj.South_Lat }}, {{ scn_obj.West_Lon }}], [{{ scn_obj.North_Lat }}, {{ scn_obj.East_Lon }}]])
 
     </script>
+    <p style="font-style: italic;">Depending on your connect it might take a few seconds for the image to be presented on the map</p> 
 
     {% if sensor == 'Landsat' %}
     <table border="black">
@@ -138,8 +139,8 @@
         To use within a desktop GIS two options are available, the first is to get the original ARD GeoTIFF files from
         the server, see system path above, but these files are very large (Landsat 500Mb, Sentinel-1: 9Gb
         Sentinel-2: 2Gb) when including all the files generated for the ARD product. Alternatively, you can download
-        a pre-rendered MBTiles file (used for the map above) which is significantly smaller (Landsat 100Mb,
-        Sentinel-1: 200Mb Sentinel-2: 200Mb) and can be opened in your Desktop GIS (e.g., QGIS) alongside your other
+        a pre-rendered MBTiles file (used for the map above) which is significantly smaller (Landsat 50Mb,
+        Sentinel-1: 200Mb Sentinel-2: 50Mb) and can be opened in your Desktop GIS (e.g., QGIS) alongside your other
         datasets for visualisation. MBTiles can therefore also be used offline (i.e., without an internet connection).
     </p>
     <p>
