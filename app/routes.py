@@ -31,7 +31,6 @@ class SelectDataForm(FlaskForm):
 @app.route('/index')
 def index():
     form = SelectDataForm(request.form)
-    print("HERE - 0")
     return render_template('index.html', form=form)
 
 
@@ -74,16 +73,9 @@ def imagelist():
         else:
             disp_page = int(request.args.get('page'))
 
-
-
     start_date_obj = datetime.datetime.strptime(start_date, '%Y-%m-%d')
     end_date_obj = datetime.datetime.strptime(end_date, '%Y-%m-%d')
-    
-    print(start_date_obj)
-    print(end_date_obj)
-    print(sensor_str)
-    print("HERE - 5")
-    
+
     sensor_obj = None
     found_sensor_obj = False
     for sensor_sys_obj in sensor_sys_objs:
@@ -99,13 +91,10 @@ def imagelist():
 
     imgs_dict = dict()
     if found_sensor_obj:
-        print("HERE - 6")
         n_scns = sensor_obj.query_scn_records_date_count(start_date_obj, end_date_obj, valid=True)
-        print("N Scenes: {}".format(n_scns))
         if n_scns > 0:
             n_full_pages = math.floor(n_scns / N_SCNS_PAGE)
             remain_scns = n_scns - (n_full_pages * N_SCNS_PAGE)
-            print("{} Full Pages with {} remaining".format(n_full_pages, remain_scns))
 
             if n_full_pages > 0:
                 start_rec = 0
@@ -236,7 +225,6 @@ def quicklook():
         glb_qk_lrg_img = qk_lrg_img.replace(EODD_WEB_PATHS["LCL"], EODD_WEB_PATHS["GLB"])
 
         return render_template('quicklook.html', scn=scn_sen_id, sensor=sensor_str, scn_img=glb_qk_lrg_img, scn_obj=scn_obj)
-
     else:
         print("Error - didn't not find the sensor ({}) object.".format(sensor_str))
         flash('Something has gone wrong could not find the sensor ({}) specified.'.format(sensor_str))
@@ -303,8 +291,11 @@ def tilecache():
         tc_lcl_path = scn_obj.ExtendedInfo["tilecache"]["tilecachepath"]
         tc_glb_path = tc_lcl_path.replace(EODD_WEB_PATHS["LCL"], EODD_WEB_PATHS["GLB"])
 
-        return render_template('tilecache.html', scn=scn_sen_id, sensor=sensor_str, scn_path=tc_glb_path, scn_obj=scn_obj)
+        vtif_lcl_path = scn_obj.ExtendedInfo["tilecache"]["visgtiff"]
+        vtif_glb_path = vtif_lcl_path.replace(EODD_WEB_PATHS["LCL"], EODD_WEB_PATHS["GLB"])
 
+        return render_template('tilecache.html', scn=scn_sen_id, sensor=sensor_str, scn_tc_path=tc_glb_path,
+                               scn_vtif_path=vtif_glb_path, scn_obj=scn_obj)
     else:
         print("Error - didn't not find the sensor ({}) object.".format(sensor_str))
         flash('Something has gone wrong could not find the sensor ({}) specified.'.format(sensor_str))
@@ -312,5 +303,14 @@ def tilecache():
 
     flash('Should not have got here, some unspecified error, please try again.')
     return redirect('/')
+
+
+@app.route('/background')
+def background():
+    return render_template('background.html')
+
+@app.route('/reports')
+def reports():
+    return render_template('reports.html')
 
 
