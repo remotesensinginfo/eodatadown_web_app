@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="static/css/leaflet.fullscreen.css" />
     <script src="static/js/sql.js"></script>
     <script src="static/js/Leaflet.TileLayer.MBTiles.js"></script>
+    <script src="static/js/easyprint/bundle.js"></script>
 
 <h2>{{ scn }}</h2>
     <p><a href="/imagelist"> Back to image list </a></p>
@@ -33,6 +34,14 @@
 
 		// Fit to overlay bounds (SW and NE points with (lat, lon))
 		mymap.fitBounds([[{{ scn_obj.South_Lat }}, {{ scn_obj.West_Lon }}], [{{ scn_obj.North_Lat }}, {{ scn_obj.East_Lon }}]])
+
+        var printer = L.easyPrint({
+      		tileLayer: eoddlyr,
+      		sizeModes: ['A4Landscape', 'A4Portrait'],
+      		filename: 'eodd_ard_map',
+      		exportOnly: true,
+      		hideControlContainer: true
+		}).addTo(mymap);
 
     </script>
     <p style="font-style: italic;">Depending on your connect it might take a few seconds for the image to be presented on the map</p> 
