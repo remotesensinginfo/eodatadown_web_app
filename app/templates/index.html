@@ -85,12 +85,12 @@
         <p>{{ form.go_submit() }}</p>
     </form>
 
-    <div id="mapid" style="width: 350px; height: 400px; margin: auto; border: 1px solid #ccc"></div>
+    <div id="mapid" style="width: 400px; height: 400px; margin: auto; border: 1px solid #ccc"></div>
     <script>
 	var mymap = L.map('mapid').setView([52.45, -3.69], 7);
 	var osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors', minZoom: 0, maxZoom: 12});
 	osm.addTo(mymap);
-	var areaSelect = L.areaSelect({width:250, height:300});
+	var areaSelect = L.areaSelect({width:350, height:375});
         areaSelect.on("change", function() {
             var bounds = this.getBounds();
             $("#bbox .north_bound").val(bounds.getNorthEast().lat);
