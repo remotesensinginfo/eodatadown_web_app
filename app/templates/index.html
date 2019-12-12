@@ -1,33 +1,93 @@
 {% extends "base.html" %}
 
 {% block content %}
+    <link rel="stylesheet" href="static/css/leaflet.css" />
+    <script src="static/js/leaflet.js" ></script>
+    <link rel="stylesheet" href="static/css/leaflet-areaselect.css" />
+    <script src="static/js/leaflet-areaselect.js" ></script>
+
     <h2>Select Period and Sensor of Interest</h2>
-    <p>To use this tool select the start, end dates and sensor you are interested in to visualise available images.</p>
+    <p>To use this tool select the start, end dates and sensor you are interested and then optionally
+        select a cloud threshold and bounding box to define a region of interest. Then press the 'View Scenes'
+        button to view the scenes meeting your query parameters.
+    </p>
     
-    <form method="POST" enctype="multipart/form-data" action="/imagelist" >
+    <p method="POST" enctype="multipart/form-data" action="/imagelist" >
         {{ form.hidden_tag() }}
         <p>
-        <div style="width: 40%">
-            {{form.start_date(class="startdate")}}
-        </div>
-        <div style="width: 40%">
-            {{form.end_date(class="enddate")}}
-        </div>
-        <br/>
-        {% for error in form.start_date.errors %}
-        <span style="color: red;">Start Date: {{ error }}</span>
-        {% endfor %}
-        {% for error in form.end_date.errors %}
-        <span style="color: red;">End Date: {{ error }}</span>
-        {% endfor %}
-        <div style="width: 50%">
-        {{form.sensor_field}}
-        </div>
-        {% for error in form.sensor_field.errors %}
-        <span style="color: red;">Sensors: {{ error }}</span>
-        {% endfor %}
+            <div style="width: 40%">
+                {{ form.start_date(class="startdate") }}
+            </div>
+            {% for error in form.start_date.errors %}
+                <span style="color: red;">Start Date: {{ error }}</span>
+            {% endfor %}
+            <br/>
+            <div style="width: 40%">
+                {{ form.end_date(class="enddate") }}
+            </div>
+            {% for error in form.end_date.errors %}
+                <span style="color: red;">End Date: {{ error }}</span>
+            {% endfor %}
+            <br/>
+            <div style="width: 50%">
+            {{ form.sensor_field }}
+            </div>
+            {% for error in form.sensor_field.errors %}
+                <span style="color: red;">Sensors: {{ error }}</span>
+            {% endfor %}
+        </p>
+        <p>
+            <div style="width: 40%">
+            {{ form.cloud_cover_thres }}
+            </div>
+            {% for error in form.cloud_cover_thres.errors %}
+                <span style="color: red;">Cloud Threshold: {{ error }}</span>
+            {% endfor %}
+        </p>
+        <p>
+            <div style="width: 25%">
+            {{ form.north_bound }}
+            </div>
+            <div style="width: 25%">
+            {{ form.east_bound }}
+            </div>
+            {% for error in form.north_bound.errors %}
+                <span style="color: red;">Northern Bound: {{ error }}</span>
+            {% endfor %}
+            {% for error in form.east_bound.errors %}
+                <span style="color: red;">Eastern Bound: {{ error }}</span>
+            {% endfor %}
+        </p>
+        <p>
+            <div style="width: 25%">
+            {{ form.south_bound }}
+            </div>
+            <div style="width: 25%">
+            {{ form.west_bound }}
+            </div>
+            {% for error in form.south_bound.errors %}
+                <span style="color: red;">Southern Bound: {{ error }}</span>
+            {% endfor %}
+            {% for error in form.west_bound.errors %}
+                <span style="color: red;">Western Bound: {{ error }}</span>
+            {% endfor %}
         </p>
         <p>{{ form.go_submit() }}</p>
     </form>
+
+    <div id="mapid" style="width: 100%; height: 600px; margin: auto; border: 1px solid #ccc"></div>
+    <script>
+	var mymap = L.map('mapid').setView([-3.69, 52.45], 6);
+	var osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors', minZoom: 0, maxZoom: 12});
+	osm.addTo(mymap);
+	var areaSelect = L.areaSelect({width:200, height:250});
+        areaSelect.on("change", function() {
+            var bounds = this.getBounds();
+            $("#result .sw").val(bounds.getSouthWest().lat + ", " + bounds.getSouthWest().lng);
+            $("#result .ne").val(bounds.getNorthEast().lat + ", " + bounds.getNorthEast().lng);
+        });
+        areaSelect.addTo(map);
+
+    </script>
 
 {% endblock %}

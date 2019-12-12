@@ -10,8 +10,8 @@ import math
 from app import app
 
 from flask_wtf import FlaskForm
-from wtforms import SubmitField, SelectField, DateField
-from wtforms.validators import Required
+from wtforms import SubmitField, SelectField, DateField, IntegerField, DecimalField
+from wtforms.validators import DataRequired
 
 import eodatadown.eodatadownsystemmain
 
@@ -21,10 +21,15 @@ EODD_WEB_PATHS = {"LCL":"/bigdata/eodd_wales_ard/web", "GLB":"http://144.124.81.
 N_SCNS_PAGE = 24
 
 class SelectDataForm(FlaskForm):
-    end_date = DateField('End', validators=[Required()], format='%Y-%m-%d', default=datetime.date(1980, 1, 1), description='End Date')
-    start_date = DateField('Start', validators=[Required()], format='%Y-%m-%d', default=datetime.date.today, description='Start Date')
-    sensor_field = SelectField('Sensor', choices=[('Landsat', 'Landsat'), ('Sentinel-1', 'Sentinel-1'), ('Sentinel-2', 'Sentinel-2')] , validators=[Required()], default='Landsat')
-    go_submit = SubmitField('Go')
+    end_date = DateField('End', validators=[DataRequired()], format='%Y-%m-%d', default=datetime.date(1980, 1, 1), description='End Date')
+    start_date = DateField('Start', validators=[DataRequired()], format='%Y-%m-%d', default=datetime.date.today, description='Start Date')
+    sensor_field = SelectField('Sensor', choices=[('Landsat', 'Landsat'), ('Sentinel-1', 'Sentinel-1'), ('Sentinel-2', 'Sentinel-2')] , validators=[DataRequired()], default='Landsat')
+    cloud_cover_thres = IntegerField('Cloud Threshold (0-100 %)', validators=[DataRequired()], default=100, description='For optical sensors a cloud threshold as a percentage threshold can be provided.')
+    north_bound = DecimalField('North', validators=[DataRequired()], default=0.0, description='Optional, provide a Northern Bound.')
+    south_bound = DecimalField('South', validators=[DataRequired()], default=0.0, description='Optional, provide a Southern Bound.')
+    east_bound = DecimalField('East', validators=[DataRequired()], default=0.0, description='Optional, provide a Eastern Bound.')
+    west_bound = DecimalField('West', validators=[DataRequired()], default=0.0, description='Optional, provide a Western Bound.')
+    go_submit = SubmitField('View Scenes')
 
 
 @app.route('/')
