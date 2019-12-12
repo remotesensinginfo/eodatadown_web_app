@@ -14,7 +14,7 @@
     
     <form method="POST" enctype="multipart/form-data" action="/imagelist" >
         {{ form.hidden_tag() }}
-	    <h3>Select time period of interest (Note. Scenes are order most recent first):</h3>
+	    <h3 style="font-weight: bold;">Select time period of interest (Note. Scenes are order most recent first):</h3>
 	    <p>
             <div style="width: 40%">
                 {{ form.start_date(class="startdate") }}
@@ -31,7 +31,7 @@
             {% endfor %}
         </p>
 
-	    <h3>Select the sensor of interest:</h3>
+	    <h3 style="font-weight: bold;">Select the sensor of interest:</h3>
 	    <p>
             <div style="width: 50%">
             {{ form.sensor_field }}
@@ -40,7 +40,7 @@
                 <span style="color: red;">Sensors: {{ error }}</span>
             {% endfor %}
         </p>
-	    <h3>If you selected an optical sensor, then you can select a cloud percentage threshold:</h3>
+	    <h3 style="font-weight: bold;">If you selected an optical sensor, then you can select a cloud percentage threshold:</h3>
 	    <p>
             <div style="width: 40%">
             {{ form.cloud_cover_thres }}
@@ -49,9 +49,9 @@
                 <span style="color: red;">Cloud Threshold: {{ error }}</span>
             {% endfor %}
         </p>
-	    <h3>Optionally, select a bounding box for the area of interest, in degrees (EPSG: 4326). You can interactively select on the map below.</h3>
+	    <h3 style="font-weight: bold;">Optionally, select a bounding box for the area of interest, in degrees (EPSG: 4326). You can interactively select on the map below.</h3>
 	    <div id='bbox'>
-            <h3>North-East Corner (Top-left)</h3>
+            <h3 style="font-weight: bold;">North-East Corner (Top-left)</h3>
             <p>
                 <div style="width: 25%">
                     N: <input id="north_bound" name="north_bound" required type="text" value="0.00" class="north_bound">
@@ -66,7 +66,7 @@
                     <span style="color: red;">Eastern Bound: {{ error }}</span>
                 {% endfor %}
             </p>
-            <h3>South-West Corner (Bottom-right)</h3>
+            <h3 style="font-weight: bold;">South-West Corner (Bottom-right)</h3>
             <p>
                 <div style="width: 25%">
                     S: <input id="south_bound" name="south_bound" required type="text" value="0.00", class="south_bound">
@@ -85,6 +85,7 @@
         <p>{{ form.go_submit() }}</p>
     </form>
 
+    <p>You can change the size of the rectangle and pan and zoom the map to specify the area of interest.</p>
     <div id="mapid" style="width: 400px; height: 400px; margin: auto; border: 1px solid #ccc"></div>
     <script>
 	var mymap = L.map('mapid').setView([52.45, -3.69], 7);
