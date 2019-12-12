@@ -56,10 +56,28 @@ def imagelist():
         start_date = form['start_date']
         end_date = form['end_date']
         sensor_str = form['sensor_field']
+        cloud_cover_thres = form['cloud_cover_thres']
+        if cloud_cover_thres < 0:
+            cloud_cover_thres = 0
+        elif cloud_cover_thres > 100:
+            cloud_cover_thres = 100
+        north_bound = form['north_bound']
+        south_bound = form['south_bound']
+        east_bound = form['east_bound']
+        west_bound = form['west_bound']
+        use_bounds = True
+        if (north_bound == 0) and (south_bound == 0) and (east_bound == 0) and (west_bound == 0):
+            use_bounds = False
 
         session['start_date'] = start_date
         session['end_date'] = end_date
         session['sensor_str'] = sensor_str
+        session['cloud_cover_thres'] = cloud_cover_thres
+        session['north_bound'] = north_bound
+        session['south_bound'] = south_bound
+        session['east_bound'] = east_bound
+        session['west_bound'] = west_bound
+        session['use_bounds'] = use_bounds
         session['page'] = 0
         disp_page = 0
     else:
@@ -68,6 +86,12 @@ def imagelist():
             start_date = session['start_date']
             end_date = session['end_date']
             sensor_str = session['sensor_str']
+            cloud_cover_thres = session['cloud_cover_thres']
+            north_bound = session['north_bound']
+            south_bound = session['south_bound']
+            east_bound = session['east_bound']
+            west_bound = session['west_bound']
+            use_bounds = session['use_bounds']
         else:
             flash('Session did not have any query information, please run query again...')
             return redirect('/')
@@ -96,7 +120,13 @@ def imagelist():
 
     imgs_dict = dict()
     if found_sensor_obj:
-        n_scns = sensor_obj.query_scn_records_date_count(start_date_obj, end_date_obj, valid=True)
+        if use_bounds:
+            bbox = [west_bound, east_bound, south_bound, north_bound]
+            n_scns = sensor_obj.query_scn_records_date_bbox_count(start_date_obj, end_date_obj, bbox, valid=True,
+                                                                  cloud_thres=cloud_cover_thres)
+        else:
+            n_scns = sensor_obj.query_scn_records_date_count(start_date_obj, end_date_obj, valid=True,
+                                                             cloud_thres=cloud_cover_thres)
         if n_scns > 0:
             n_full_pages = math.floor(n_scns / N_SCNS_PAGE)
             remain_scns = n_scns - (n_full_pages * N_SCNS_PAGE)
@@ -112,9 +142,22 @@ def imagelist():
                     n_pg_scns = remain_scns
                     session['page'] = n_full_pages
                     disp_page = n_full_pages
-                scns = sensor_obj.query_scn_records_date(start_date_obj, end_date_obj, start_rec, n_pg_scns, valid=True)
+
+                if use_bounds:
+                    bbox = [west_bound, east_bound, south_bound, north_bound]
+                    scns = sensor_obj.query_scn_records_date_bbox(start_date_obj, end_date_obj, bbox, start_rec,
+                                                                  n_pg_scns, valid=True, cloud_thres=cloud_cover_thres)
+                else:
+                    scns = sensor_obj.query_scn_records_date(start_date_obj, end_date_obj, start_rec, n_pg_scns,
+                                                             valid=True, cloud_thres=cloud_cover_thres)
             else:
-                scns = sensor_obj.query_scn_records_date(start_date_obj, end_date_obj, 0, remain_scns, valid=True)
+                if use_bounds:
+                    bbox = [west_bound, east_bound, south_bound, north_bound]
+                    scns = sensor_obj.query_scn_records_date_bbox(start_date_obj, end_date_obj, bbox, 0, remain_scns,
+                                                                  valid=True, cloud_thres=cloud_cover_thres)
+                else:
+                    scns = sensor_obj.query_scn_records_date(start_date_obj, end_date_obj, 0, remain_scns,
+                                                             valid=True, cloud_thres=cloud_cover_thres)
 
             for scn in scns:
                 imgs_dict[scn.PID] = dict()
