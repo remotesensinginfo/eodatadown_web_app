@@ -51,10 +51,11 @@
             {% endfor %}
         </p>
 	<h3>Optionally, select a bounding box for the area of interest, in degrees (EPSG: 4326). You can interactively select on the map below.</h3>
+	<div id='bbox'>
 	<h3>North-East Corner (Top-left)</h3>
 	<p>
             <div style="width: 25%">
-            {{ form.north_bound }}
+                <input id="north_bound" name="north_bound" required type="text" value="0.00" class="north_bound">
             </div>
             <div style="width: 25%">
             {{ form.east_bound }}
@@ -89,13 +90,14 @@
 	var mymap = L.map('mapid').setView([52.45, -3.69], 7);
 	var osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors', minZoom: 0, maxZoom: 12});
 	osm.addTo(mymap);
-	var areaSelect = L.areaSelect({width:200, height:300});
+	var areaSelect = L.areaSelect({width:250, height:300});
         areaSelect.on("change", function() {
             var bounds = this.getBounds();
+            $("#bbox .north_bound").val(bounds.getNorthEast().lat);
             $("#result .sw").val(bounds.getSouthWest().lat + ", " + bounds.getSouthWest().lng);
             $("#result .ne").val(bounds.getNorthEast().lat + ", " + bounds.getNorthEast().lng);
         });
-        areaSelect.addTo(map);
+        areaSelect.addTo(mymap);
 
     </script>
 
