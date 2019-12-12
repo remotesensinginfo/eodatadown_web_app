@@ -56,15 +56,15 @@ def imagelist():
         start_date = form['start_date']
         end_date = form['end_date']
         sensor_str = form['sensor_field']
-        cloud_cover_thres = form['cloud_cover_thres']
+        cloud_cover_thres = int(form['cloud_cover_thres'])
         if cloud_cover_thres < 0:
             cloud_cover_thres = 0
         elif cloud_cover_thres > 100:
             cloud_cover_thres = 100
-        north_bound = form['north_bound']
-        south_bound = form['south_bound']
-        east_bound = form['east_bound']
-        west_bound = form['west_bound']
+        north_bound = float(form['north_bound'])
+        south_bound = float(form['south_bound'])
+        east_bound = float(form['east_bound'])
+        west_bound = float(form['west_bound'])
         use_bounds = True
         if (north_bound == 0) and (south_bound == 0) and (east_bound == 0) and (west_bound == 0):
             use_bounds = False
