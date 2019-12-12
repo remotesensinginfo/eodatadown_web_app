@@ -93,10 +93,10 @@
 	var areaSelect = L.areaSelect({width:250, height:300});
         areaSelect.on("change", function() {
             var bounds = this.getBounds();
-            $("#bbox .north_bound").val(bounds.getNorthEast().lng);
-            $("#bbox .east_bound").val(bounds.getNorthEast().lat);
-            $("#bbox .south_bound").val(bounds.getSouthWest().lng);
-            $("#bbox .west_bound").val(bounds.getSouthWest().lat);
+            $("#bbox .north_bound").val(bounds.getNorthEast().lat);
+            $("#bbox .east_bound").val(bounds.getNorthEast().lng);
+            $("#bbox .south_bound").val(bounds.getSouthWest().lat);
+            $("#bbox .west_bound").val(bounds.getSouthWest().lng);
         });
         areaSelect.addTo(mymap);
 
