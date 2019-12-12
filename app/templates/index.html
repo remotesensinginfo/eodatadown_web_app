@@ -14,9 +14,8 @@
     
     <form method="POST" enctype="multipart/form-data" action="/imagelist" >
         {{ form.hidden_tag() }}
-
-	<h3>Select time period of interest (Note. Scenes are order most recent first):</h3>
-	<p>
+	    <h3>Select time period of interest (Note. Scenes are order most recent first):</h3>
+	    <p>
             <div style="width: 40%">
                 {{ form.start_date(class="startdate") }}
             </div>
@@ -32,8 +31,8 @@
             {% endfor %}
         </p>
 
-	<h3>Select the sensor of interest:</h3>
-	<p>
+	    <h3>Select the sensor of interest:</h3>
+	    <p>
             <div style="width: 50%">
             {{ form.sensor_field }}
             </div>
@@ -41,8 +40,8 @@
                 <span style="color: red;">Sensors: {{ error }}</span>
             {% endfor %}
         </p>
-	<h3>If you selected an optical sensor, then you can select a cloud percentage threshold:</h3>
-	<p>
+	    <h3>If you selected an optical sensor, then you can select a cloud percentage threshold:</h3>
+	    <p>
             <div style="width: 40%">
             {{ form.cloud_cover_thres }}
             </div>
@@ -50,38 +49,39 @@
                 <span style="color: red;">Cloud Threshold: {{ error }}</span>
             {% endfor %}
         </p>
-	<h3>Optionally, select a bounding box for the area of interest, in degrees (EPSG: 4326). You can interactively select on the map below.</h3>
-	<div id='bbox'>
-	<h3>North-East Corner (Top-left)</h3>
-	<p>
-            <div style="width: 25%">
-                <input id="north_bound" name="north_bound" required type="text" value="0.00" class="north_bound">
-            </div>
-            <div style="width: 25%">
-            {{ form.east_bound }}
-            </div>
-            {% for error in form.north_bound.errors %}
-                <span style="color: red;">Northern Bound: {{ error }}</span>
-            {% endfor %}
-            {% for error in form.east_bound.errors %}
-                <span style="color: red;">Eastern Bound: {{ error }}</span>
-            {% endfor %}
-        </p>
-	<h3>South-West Corner (Bottom-right)</h3>
-	<p>
-            <div style="width: 25%">
-            {{ form.south_bound }}
-            </div>
-            <div style="width: 25%">
-            {{ form.west_bound }}
-            </div>
-            {% for error in form.south_bound.errors %}
-                <span style="color: red;">Southern Bound: {{ error }}</span>
-            {% endfor %}
-            {% for error in form.west_bound.errors %}
-                <span style="color: red;">Western Bound: {{ error }}</span>
-            {% endfor %}
-        </p>
+	    <h3>Optionally, select a bounding box for the area of interest, in degrees (EPSG: 4326). You can interactively select on the map below.</h3>
+	    <div id='bbox'>
+            <h3>North-East Corner (Top-left)</h3>
+            <p>
+                <div style="width: 25%">
+                    N: <input id="north_bound" name="north_bound" required type="text" value="0.00" class="north_bound">
+                </div>
+                <div style="width: 25%">
+                    E: <input id="east_bound" name="east_bound" required type="text" value="0.00", class="east_bound">
+                </div>
+                {% for error in form.north_bound.errors %}
+                    <span style="color: red;">Northern Bound: {{ error }}</span>
+                {% endfor %}
+                {% for error in form.east_bound.errors %}
+                    <span style="color: red;">Eastern Bound: {{ error }}</span>
+                {% endfor %}
+            </p>
+            <h3>South-West Corner (Bottom-right)</h3>
+            <p>
+                <div style="width: 25%">
+                    S: <input id="south_bound" name="south_bound" required type="text" value="0.00", class="south_bound">
+                </div>
+                <div style="width: 25%">
+                    W: <input id="west_bound" name="west_bound" required type="text" value="0.00", class="west_bound">
+                </div>
+                {% for error in form.south_bound.errors %}
+                    <span style="color: red;">Southern Bound: {{ error }}</span>
+                {% endfor %}
+                {% for error in form.west_bound.errors %}
+                    <span style="color: red;">Western Bound: {{ error }}</span>
+                {% endfor %}
+            </p>
+        </div>
         <p>{{ form.go_submit() }}</p>
     </form>
 
@@ -93,9 +93,10 @@
 	var areaSelect = L.areaSelect({width:250, height:300});
         areaSelect.on("change", function() {
             var bounds = this.getBounds();
-            $("#bbox .north_bound").val(bounds.getNorthEast().lat);
-            $("#result .sw").val(bounds.getSouthWest().lat + ", " + bounds.getSouthWest().lng);
-            $("#result .ne").val(bounds.getNorthEast().lat + ", " + bounds.getNorthEast().lng);
+            $("#bbox .north_bound").val(bounds.getNorthEast().lng);
+            $("#bbox .east_bound").val(bounds.getNorthEast().lat);
+            $("#bbox .south_bound").val(bounds.getSouthWest().lng);
+            $("#bbox .west_bound").val(bounds.getSouthWest().lat);
         });
         areaSelect.addTo(mymap);
 
