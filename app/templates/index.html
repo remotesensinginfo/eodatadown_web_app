@@ -14,7 +14,7 @@
     
     <form method="POST" enctype="multipart/form-data" action="/imagelist" >
         {{ form.hidden_tag() }}
-	    <h3 style="font-weight: bold;">Select time period of interest (Note. Scenes are order most recent first):</h3>
+	    <h3 style="font-weight: bold;">Select time period of interest (Note. Scenes are ordered, most recent first):</h3>
 	    <p>
             <div style="width: 40%">
                 Start: {{ form.start_date(class="startdate") }}
@@ -54,10 +54,10 @@
             <h3 style="font-weight: bold;">North-East Corner (Top-left)</h3>
             <p>
                 <div style="width: 25%">
-                    N: <input id="north_bound" name="north_bound" required type="text" value="0.00" class="north_bound">
+                    North: <input id="north_bound" name="north_bound" required type="text" value="0.00" class="north_bound">
                 </div>
                 <div style="width: 25%">
-                    E: <input id="east_bound" name="east_bound" required type="text" value="0.00", class="east_bound">
+                    East: <input id="east_bound" name="east_bound" required type="text" value="0.00", class="east_bound">
                 </div>
                 {% for error in form.north_bound.errors %}
                     <span style="color: red;">Northern Bound: {{ error }}</span>
@@ -69,10 +69,10 @@
             <h3 style="font-weight: bold;">South-West Corner (Bottom-right)</h3>
             <p>
                 <div style="width: 25%">
-                    S: <input id="south_bound" name="south_bound" required type="text" value="0.00", class="south_bound">
+                    South: <input id="south_bound" name="south_bound" required type="text" value="0.00", class="south_bound">
                 </div>
                 <div style="width: 25%">
-                    W: <input id="west_bound" name="west_bound" required type="text" value="0.00", class="west_bound">
+                    West: <input id="west_bound" name="west_bound" required type="text" value="0.00", class="west_bound">
                 </div>
                 {% for error in form.south_bound.errors %}
                     <span style="color: red;">Southern Bound: {{ error }}</span>
@@ -85,7 +85,7 @@
         <p>{{ form.go_submit() }}</p>
     </form>
 
-    <p>You can change the size of the rectangle and pan and zoom the map to specify the area of interest.</p>
+    <p>You can change the size of the rectangle, by dragging a corner, and pan and zoom the map to specify the area of interest. The fields above are automatically updated.</p>
     <div id="mapid" style="width: 400px; height: 400px; margin: auto; border: 1px solid #ccc"></div>
     <script>
 	var mymap = L.map('mapid').setView([52.45, -3.69], 7);
