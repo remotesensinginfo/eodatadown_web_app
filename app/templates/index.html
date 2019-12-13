@@ -17,14 +17,14 @@
 	    <h3 style="font-weight: bold;">Select time period of interest (Note. Scenes are order most recent first):</h3>
 	    <p>
             <div style="width: 40%">
-                {{ form.start_date(class="startdate") }}
+                Start: {{ form.start_date(class="startdate") }}
             </div>
             {% for error in form.start_date.errors %}
                 <span style="color: red;">Start Date: {{ error }}</span>
             {% endfor %}
             <br/>
             <div style="width: 40%">
-                {{ form.end_date(class="enddate") }}
+                End: {{ form.end_date(class="enddate") }}
             </div>
             {% for error in form.end_date.errors %}
                 <span style="color: red;">End Date: {{ error }}</span>
@@ -49,7 +49,7 @@
                 <span style="color: red;">Cloud Threshold: {{ error }}</span>
             {% endfor %}
         </p>
-	    <h3 style="font-weight: bold;">Optionally, select a bounding box for the area of interest, in degrees (EPSG: 4326). You can interactively select on the map below.</h3>
+	    <h3 style="font-weight: bold;">Optionally, select a bounding box for the area of interest, in degrees (EPSG: 4326). You can interactively select an area on the map below.</h3>
 	    <div id='bbox'>
             <h3 style="font-weight: bold;">North-East Corner (Top-left)</h3>
             <p>
