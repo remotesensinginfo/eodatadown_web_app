@@ -20,9 +20,9 @@
                     <img class="image" src="{{ scns[scn].img }}" alt="{{ scns[scn].id }}" />
                 </a>
                 <figcaption>
-                    <p>	{{ scns[scn].date }} </p>
-                    <p><a href="tilecache?scn={{ scn }}">Map</a></p>
-                    <p><a href="quicklook?scn={{ scn }}">Quicklook</a></p>
+                    {{ scns[scn].date }}
+                    <a href="tilecache?scn={{ scn }}">Map</a>
+                    <a href="quicklook?scn={{ scn }}">Quicklook</a>
                 </figcaption>
             </figure>
         {% endfor %}

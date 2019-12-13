@@ -2825,9 +2825,9 @@ body.is-menu-visible #menu {
 
 
 .scncontainer {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: 300px 300px 300px;
-    grid-column-gap: 5px;
-    grid-row-gap: 5px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(275px,1fr));
+  grid-template-rows: 275px 275px 275px;
+  grid-column-gap: 2px;
+  grid-row-gap: 2px;
 }
