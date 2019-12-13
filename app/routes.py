@@ -259,7 +259,7 @@ def quicklook():
         elif sensor_str == 'Sentinel-1':
             scn_sen_id = scn_obj.Scene_ID
         elif sensor_str == 'Sentinel-2':
-            scn_sen_id = scn_obj.Granule_ID
+            scn_sen_id = scn_obj.Product_ID
         else:
             flash('Something has gone wrong could not find the sensor specified.')
             return redirect('/')
@@ -331,7 +331,7 @@ def tilecache():
         elif sensor_str == 'Sentinel-1':
             scn_sen_id = scn_obj.Scene_ID
         elif sensor_str == 'Sentinel-2':
-            scn_sen_id = scn_obj.Granule_ID
+            scn_sen_id = scn_obj.Product_ID
         else:
             flash('Something has gone wrong could not find the sensor specified.')
             return redirect('/')
