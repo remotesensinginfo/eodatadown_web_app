@@ -48,7 +48,7 @@ section, summary, time, mark, audio, video {
   border: 0;
   font-size: 100%;
   font: inherit;
-  vertical-align: baseline; }
+  vertical-align: baseline;}
 
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
@@ -140,10 +140,13 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 300;
   line-height: 1.5;
   text-transform: uppercase;
-  margin: 0 0 1.5rem 0; }
+  margin: 0 0 1.5rem 0; 
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;}
   h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
-    color: inherit;
-    text-decoration: none; }
+  color: inherit;
+  text-decoration: none; }
 
 h1 {
   font-size: 3rem;
@@ -2822,8 +2825,6 @@ body.is-menu-visible #menu {
   box-shadow: 0 0 1.5rem 0 rgba(0, 0, 0, 0.2);
   visibility: visible; }
 
-
-
 .scncontainer {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(275px,1fr));
@@ -2831,3 +2832,5 @@ body.is-menu-visible #menu {
   grid-column-gap: 2px;
   grid-row-gap: 2px;
 }
+
+
