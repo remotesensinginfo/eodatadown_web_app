@@ -2,6 +2,49 @@
 
 {% block content %}
     <h2>Background</h2>
+    <p>
+        This page provides some background on the analysis ready data (ARD) products which have been
+        produced and the visualisations of those products used on this site.
+    </p>
+
+    <h3>Projection and Coordinate System</h3>
+    <p>
+        All data from this analysis has been reprojected to the
+        <a href="https://en.wikipedia.org/wiki/Ordnance_Survey_National_Grid">Ordnance Survey National Grid</a>
+        (<a href="https://epsg.io/27700">EPSG:27700</a>.
+    </p>
+
+    <h3>Landsat</h3>
+    <p>
+        The <a href="https://landsat.gsfc.nasa.gov">Landsat program</a> offers the longest continuous global record of
+        the Earth’s surface; it continues to deliver visually stunning and scientifically valuable images of our planet.
+    </p>
+    <p>
+        For Wales, this system has made available the full archive of Landsat 4 TM, Landsat 5 TM, Landsat 7 ETM+ and
+        Landsat 8 OLI of scenes with less than 95 % cloud. The earliest image was from 5th January 1985.
+    </p>
+    <p>
+        All the landsat scenes have come from the <a href="https://www.usgs.gov/land-resources/nli/landsat/landsat-collection-1">
+        USGS Collection 1</a> archive and has been processed to a spatial resolution of 30 metres (i.e., each pixel
+        represents a 30 x 30 m area on the ground).
+    </p>
+
+    <h3>Sentinel-1</h3>
+    <p>
+        The ESA <a href="https://sentinel.esa.int/web/sentinel/missions/sentinel-1">Sentinel-1</a> mission comprises a
+        constellation of two polar-orbiting satellites, operating day and night performing C-band synthetic aperture
+        radar (SAR) imaging, enabling them to acquire imagery regardless of the weather.
+    </p>
+
+    <h3>Sentinel-2</h3>
+    <p>
+        The ESA/Copernicus <a href="https://sentinel.esa.int/web/sentinel/missions/sentinel-2">Sentinel-2</a> mission
+        comprises a constellation of two polar-orbiting satellites placed in the same sun-synchronous orbit, phased
+        at 180&deg; to each other. It aims at monitoring variability in land surface conditions, and its wide swath
+        width (290 km) and high revisit time (10 days at the equator with one satellite, and 5 days with 2 satellites
+        under cloud-free conditions which results in 2-3 days at mid-latitudes) will support monitoring of Earth's
+        surface changes. The coverage limits are from between latitudes 56&deg; south and 84&deg; north.
+    </p>
 
 {% endblock %}
 
